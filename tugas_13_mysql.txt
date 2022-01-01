@@ -1,0 +1,46 @@
+MariaDB [belajar]> DROP PROCEDURE IF EXISTS penilaian;
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [belajar]> DELIMITER //
+MariaDB [belajar]> CREATE PROCEDURE penilaian(nomer_induk CHAR(8))
+    -> BEGIN
+    -> DECLARE ip DECIMAL(4,2) DEFAULT 0;
+    ->
+    -> SELECT semester_1 
+    ->	INTO ip 
+    ->	FROM nilai_mahasiswa 
+    ->	WHERE nim = nomer_induk;
+    -> 		IF ip <= 1.00 THEN
+    -> SELECT 'Serius kuliah g sih?';
+    -> 		ELSEIF ip <= 2.00 THEN
+    -> SELECT 'Kebanyakan main';
+    -> 		ELSEIF ip <= 3.00 THEN
+    -> SELECT 'Berusaha lagi';
+    -> 		ELSEIF ip <= 4.00 THEN
+    -> SELECT 'mantab, pertahankan';
+    -> 		ELSE
+    -> SELECT 'Nilai tidak sesuai';
+    -> 		END IF;
+    -> END//
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [belajar]> DELIMITER ;
+MariaDB [belajar]> CALL penilaian('17080305');
++---------------------+
+| mantab, pertahankan |
++---------------------+
+| mantab, pertahankan |
++---------------------+
+1 row in set (0.001 sec)
+
+Query OK, 1 row affected (0.011 sec)
+
+MariaDB [belajar]> CALL penilaian('17140143');
++---------------+
+| Berusaha lagi |
++---------------+
+| Berusaha lagi |
++---------------+
+1 row in set (0.000 sec)
+
+Query OK, 1 row affected (0.010 sec)
